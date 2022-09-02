@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>번역기</b></h1>
+
+    <form method="post" name="transForm">
+        {% csrf_token %}
+        <div class="row mt-5">
+            <div class="col-sm-5">
+                <textarea name="bf" class="form-control" style="height:300px">{{bf}}</textarea>
+            </div>
+            <div class="col-sm-2 text-center" style="margin: auto;">
+                <select class="form-select" name="fr">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if fr %}{% if fr == code %} selected {% endif %}{% else %}{% if code == 'en' %} selected {% endif %}{% endif %}>{{ name | upper }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" onclick="check()" class="btn btn-dark mt-4 mb-4" style="width:100%">번역</button>
+                <select class="form-select" name="to">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if fr %}{% if to == code %} selected {% endif %}{% else %}{% if code == 'ko' %} selected {% endif %}{% endif %}>{{ name | upper }}</option>
+                    {% endfor %}
+                </select>
+            </div>    
+            <div class="col-sm-5">
+                <textarea class="form-control" style="height:300px" disabled>{{af}}</textarea>
+            </div>
+        </div>
+    </form> 
+
+
+    {% if af %}
+        <form method="post" action="{% url 'tts:index' %}">
+            {% csrf_token %}
+            <div class="text-end">
+                <input type="hidden" name="st" value="{{ af }}">
+                <input type="hidden" name="la" value="{{ to }}">
+                <input type="text" name="fn" placeholder="파일이름 입력">
+                <button class="btn btn-dark">TTS</button>
+            </div>
+        </form>
+    {% endif %}
+
+
+    <script>
+        function check(){
+            tf = document.transForm;
+            if(!tf.bf.value){
+                alert("번역할 문장을 입력해주세요!");
+            }else if(tf.fr.value == tf.to.value){
+                alert("서로 다른 나라를 골라주세요!!");
+            }else{
+                tf.submit();
+            }
+        }
+    </script>
+
+{% endblock %}

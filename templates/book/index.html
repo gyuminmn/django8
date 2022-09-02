@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <div class="container mt-5 mb-5">
+        
+        <h1><b>BOOKMARK PAGE</b></h1>
+
+        <div class="text-end">
+            <a class="btn btn-warning btn-lg" href="{% url 'book:create' %}"><b>북마크생성</b></a>
+        </div>
+
+        <div class="row">
+            {% for i in bset %}
+            <div class="col-sm-4 mt-5">
+                <div class="card">
+                    <div class="card-body text-center" style="background-color: rgba(145, 245, 6, 0.202);">
+                        <h3 class="card-title"><mark><b>{{i.site_name}}</b></mark></h3>
+                        <p class="card-text">{{i.comment}}</p>
+                        <a href="{{i.url}}" target="_blank" class="btn btn-dark">사이트이동</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>게시글 생성</b></h1>
+
+    <form method="post" name="createForm">
+        {% csrf_token %}
+        <div class="mb-3 mt-5">
+            <label class="form-label"><b>SUBJECT</b></label>
+            <input type="text" class="form-control" name="sub"><br>
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><b>WRITER</b></label>
+            <input type="text" class="form-control" value="{{ user }}" disabled><br>
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><b>CONTENT</b></label>
+            <textarea class="form-control" style="height: 150px;" name="con"></textarea><br>
+        </div>
+        <div class="text-end mt-3">
+            <button class="btn btn-dark" type="button" onclick="check()">생성</button>
+        </div>
+    </form>
+
+    <script>
+        function check() {
+            cf = document.createForm;
+            if(!cf.sub.value){
+                alert("제목을 입력해주세요.")
+            }else if(cf.con.value.length < 10){
+                alert("본문은 최소 10글자 이상이어야 합니다.")
+            }else{
+                cf.submit();
+            }
+        }
+    </script>
+
+{% endblock %}
